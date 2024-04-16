@@ -1,0 +1,15 @@
+ting:5
+ting:4
+ting:3
+ting:2
+ting:1
+ting:5
+ting:4
+ting:3
+ting:2
+ting:1
+ting:5
+ting:4
+ting:3
+ting:2
+ting:1

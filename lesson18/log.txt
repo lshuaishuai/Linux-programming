@@ -1,0 +1,12 @@
+open fd:3
+shuaishuaiopen fd:3
+shuaishuaiopen fd:3
+shuaishuaiopen fd:3
+shuaishuaiopen fd:3
+shuaishuaiopen fd:3
+shuaishuaiopen fd:3
+open fd:3
+shuaishuaiopen fd:3
+open fd:3
+shuaishuaiopen fd:3
+open fd:3
