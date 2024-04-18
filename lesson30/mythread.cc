@@ -18,7 +18,7 @@ void *thread_routine(void *args)
     {
         cout << "我是新线程, 名字为：" << name << ":";
         func();
-        cout << "val:" << val++ << " &val:" << &val << endl;
+        cout << " val:" << val++ << " &val:" << &val << endl;
         fflush(stdout);
         sleep(1);
     }
@@ -41,9 +41,9 @@ int main()
         char tidbuffer[64];
         snprintf(tidbuffer, sizeof(tidbuffer), "0x%x", tid);
         
-        cout << "我是主线程,我创建出来的线程id为:" << tidbuffer << ":" ;
+            
         func();
-        cout << "val:" << val << " &val:" << &val << endl;
+        cout << " val:" << val << " &val:" << &val << endl;
         fflush(stdout);
         sleep(1);
     }
