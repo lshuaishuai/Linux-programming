@@ -3,7 +3,7 @@
 #include <queue>
 # include <pthread.h>
 
-const int gmaxCap = 5;
+const int gmaxCap = 500;
 
 
 template <class T>
