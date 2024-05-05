@@ -6,7 +6,7 @@
 # include <semaphore.h>
 # include <pthread.h>
 
-static const int gcap = 100;
+static const int gcap = 10;
 
 template <class T>
 class RingQueue
@@ -35,7 +35,7 @@ public:
         assert(n == 0);
         n = sem_init(&_c_dataSem, 0, 0);
         assert(n == 0);
-        _producttorStep = _consumerStep = 0;
+        _producttorStep = _consumerStep = 0;  // 起始位置
 
         pthread_mutex_init(&_pmutex, nullptr);
         pthread_mutex_init(&_cmutex, nullptr);
@@ -47,7 +47,7 @@ public:
         P(_p_sapceSem); // 申请到了空间信号量 意味着一定能进行正常的生产
         pthread_mutex_lock(&_pmutex);
         _queue[_producttorStep++] = in;
-        _producttorStep %= _cap;
+        _producttorStep %= _cap;  // 环形队列
         pthread_mutex_unlock(&_pmutex);
         V(_c_dataSem);
     }
@@ -76,7 +76,7 @@ private:
     int _cap; // 环形队列容量
     sem_t _p_sapceSem; // 生产者 看中的是空间资源
     sem_t _c_dataSem; // 消费者 看中的是数据资源
-    int _producttorStep; // 生产者位置
+    int _producttorStep; // 生产者位置 等同于队列的头尾指针
     int _consumerStep; // 消费者位置
 
     // 为了实现多消费多生产 需要加两把锁

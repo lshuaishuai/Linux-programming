@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<time.h>
+#include<unistd.h>
 
 void Print(int sum)
 {
@@ -21,6 +22,6 @@ int main()
 {   
     int sum=AddToval(0, 100);
     Print(sum);
-
+    sleep(3);
     return 0;
 }

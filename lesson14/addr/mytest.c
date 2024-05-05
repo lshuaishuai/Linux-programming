@@ -1,40 +1,23 @@
-#include<stdio.h>
-#include<unistd.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/types.h>
 
-int global_value = 100;
-
+int g_val = 0;
 int main()
 {
     pid_t id = fork();
-    if(id < 0)
-    {
-        printf("fork error\n");
-
+    if(id < 0){
+        perror("fork");
+        return 0;
     }
-    else if(id == 0)
-    {
-        int cnt = 0;
-        while(1)
-        {
-            printf("我是子进程，pid:%d, ppid:%d | global_value:%d, &global_value:%p\n", getpid(), getppid(), global_value, &global_value);
-            sleep(1);
-            cnt++;
-            if(cnt == 10)
-            {
-                global_value=300;
-                printf("子进程已经更改了全局的变量。。。。\n");
-            }
-        }
-        
+    else if(id == 0){ //child
+        g_val = 100;
+        printf("child[%d]: %d : %p\n", getpid(), g_val, &g_val);
     }
-    else{
-   
-        while(1)
-        {
-            printf("我是父进程，pid:%d, ppid:%d | global_value:%d, &global_value:%p\n", getpid(), getppid(), global_value, &global_value);
-            sleep(2);
-        }
+    else{ //parent
+        printf("parent[%d]: %d : %p\n", getpid(), g_val, &g_val);
     }
-
+    sleep(1);
     return 0;
 }

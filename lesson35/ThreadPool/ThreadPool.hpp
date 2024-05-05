@@ -35,6 +35,7 @@ private:
 
     static void *handlerTask(void *args)
     {
+        // 由于是静态函数 所以不能调用成员变量 需要靠参数获取当前的队列
         ThreadData<T> *td = static_cast<ThreadData<T>*>(args);
         while(true)
         {
@@ -125,7 +126,8 @@ public:
             {
                 tp = new ThreadPool<T>();
             }
-            _singLock.unlock();}
+            _singLock.unlock();
+        }
         return tp;
     }
 
