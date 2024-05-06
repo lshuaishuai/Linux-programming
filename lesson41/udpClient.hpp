@@ -41,8 +41,27 @@ namespace Client
 
         }
 
+        static void* recvMessage(void *args)
+        {
+            int sockfd = *(static_cast<int*>(args));
+            pthread_detach(pthread_self()); // 线程分离
+            while(1)
+            {
+                char buffer[1024];
+                struct sockaddr_in temp;
+                socklen_t temp_len = sizeof(temp);
+                size_t n = recvfrom(sockfd, buffer, sizeof(buffer)-1, 0, (struct sockaddr*)&temp, &temp_len);
+                if(n > 0) buffer[n] = 0;
+                cout << buffer << endl;
+            }
+            return nullptr;
+        }
+
         void run()
         {
+            // 多线程方式 主线程发 新创建线程的收信息
+            pthread_create(&_reader, nullptr, recvMessage, (void*)&_sockfd);
+
             struct sockaddr_in server;
             memset(&server, 0, sizeof(server)); 
             server.sin_family = AF_INET;
@@ -53,17 +72,12 @@ namespace Client
             while(!_quit)
             {
                 // cout << "Please Enter# ";
-                cout << "[XXX@shuaishaui的远程机器 lesson40]# ";
+                char print[1024];
+                fprintf(stderr, "Enter# ");
                 cin.getline(message, sizeof(message));
 
                 sendto(_sockfd, message, sizeof(message), 0, (struct sockaddr*)&server, sizeof(server));
                 
-                char buffer[1024];
-                struct sockaddr_in temp;
-                socklen_t temp_len = sizeof(temp);
-                size_t n = recvfrom(_sockfd, buffer, sizeof(buffer)-1, 0, (struct sockaddr*)&temp, &temp_len);
-                if(n > 0) buffer[n] = 0;
-                cout << "服务器翻译结果# " << buffer << endl;
             }
         }
 
@@ -73,5 +87,7 @@ namespace Client
         string _serverIp;
         uint16_t _serverPort;
         bool _quit;
+
+        pthread_t _reader;
     };
 }
