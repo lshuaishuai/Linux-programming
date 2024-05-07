@@ -7,7 +7,7 @@ using namespace Client;
 void Usage(string proc)
 {
     cout << "\nUsage:\n\t" << proc << " server_ip server_port\n\n" << endl;
-}
+}   
 
 // ./udpClient server_ip server_port
 int main(int argc, char *argv[])

@@ -47,7 +47,7 @@ namespace Server
             cout << "socket success: " << ":" << _sockfd << endl;
 
             // 2.绑定port，ip(TODO)
-            struct sockaddr_in local; // 就是定义了一个变量 栈上--用户
+            struct sockaddr_in local; // 就是定义了一个变量 栈上--用户 因为我们要写的是网络套接字 所以就需要是struct sockaddr_in类型的 在bind中进行强转即可 BUNIX域间套接字就是用struct socjaddr_un
             bzero(&local, sizeof(local));
             local.sin_family = AF_INET; // 网络通信
             local.sin_port = htons(_port);  // 如果要给别人发消息 自己的ip和port也要发给对方 主机转为网络序列
@@ -69,7 +69,7 @@ namespace Server
             for(;;)
             {
                 // 读取数据
-                struct sockaddr_in peer;
+                struct sockaddr_in peer; // 输出型参数 是用来存储当前读到的数据是从哪个客户端发来的 所以不需要初始化
                 socklen_t len = sizeof(peer); // 必填
                 ssize_t s = recvfrom(_sockfd, buffer, sizeof(buffer)-1, 0, (struct sockaddr*)&peer, &len);
                 // 1.数据是什么？ 2.谁发的？

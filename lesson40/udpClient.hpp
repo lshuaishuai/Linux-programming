@@ -53,7 +53,7 @@ namespace Client
             while(!_quit)
             {
                 // cout << "Please Enter# ";
-                cout << "[XXX@shuaishaui的远程机器 lesson40]# ";
+                cout << "[XXX@shuaishaui的远程机器 lsesson40]# ";
                 cin.getline(message, sizeof(message));
 
                 sendto(_sockfd, message, sizeof(message), 0, (struct sockaddr*)&server, sizeof(server));

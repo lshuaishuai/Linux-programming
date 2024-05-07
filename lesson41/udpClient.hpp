@@ -65,18 +65,17 @@ namespace Client
             struct sockaddr_in server;
             memset(&server, 0, sizeof(server)); 
             server.sin_family = AF_INET;
-            server.sin_addr.s_addr = inet_addr(_serverIp.c_str());
+            server.sin_addr.s_addr = inet_addr(_serverIp.c_str());  
             server.sin_port = htons(_serverPort);
 
             char message[1024];
             while(!_quit)
             {
                 // cout << "Please Enter# ";
-                char print[1024];
                 fprintf(stderr, "Enter# ");
                 cin.getline(message, sizeof(message));
 
-                sendto(_sockfd, message, sizeof(message), 0, (struct sockaddr*)&server, sizeof(server));
+                sendto(_sockfd, message, sizeof(message), 0, (struct sockaddr*)&server, sizeof(server)); // 最后两个是输入型参数 告诉服务器向谁发送 所以就要对server进行初始化
                 
             }
         }

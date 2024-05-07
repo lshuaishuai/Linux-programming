@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
         exit(USAGE_ERR);
     }
     uint16_t port = atoi(argv[1]);
-    string ip = argv[1];
+    // string ip = argv[1];
 
     signal(2, reload);  // 热加载 不需要重启就可以往文件中添加数据  
     initDict();

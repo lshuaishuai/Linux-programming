@@ -60,6 +60,7 @@ public:
 
     void broadcastMessage(int sockfd, const string& ip, const uint16_t& port, const string& message)
     {
+        // 把收到的消息发送个每个用户
         for(auto& user : users)
         {
             struct sockaddr_in client;

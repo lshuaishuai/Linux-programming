@@ -18,7 +18,7 @@ void routeMessage(int sockfd, string clientIp, uint16_t clientPort, string messa
 
     if(onlineUser.isOnline(clientIp, clientPort)) 
     {
-        // 消息路由
+        // 消息路由 把服务器作为消息的转发站，将每个用户的消息发送给其他用户来实现各个用户之间的通信
         onlineUser.broadcastMessage(sockfd, clientIp, clientPort, message);
         
     }
