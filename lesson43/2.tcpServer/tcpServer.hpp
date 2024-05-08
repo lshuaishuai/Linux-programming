@@ -1,15 +1,21 @@
 #pragma once
 
 #include "log.hpp"
+#include "ThreadPool.hpp"
+#include "Task.hpp"
 
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <cstdlib>
+#include <sys/wait.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <signal.h>
+#include <pthread.h>
 
 namespace server
 {
@@ -24,6 +30,19 @@ namespace server
 
     static const uint16_t gport = 8080;
     static const int gbacklog = 5;
+
+    class TcpServer;
+    class ThreadData
+    {
+    public:
+        ThreadData(TcpServer *self, int sock)
+            :_self(self)
+            ,_sock(sock)
+        {}
+
+        TcpServer *_self;
+        int _sock;
+    };
 
     class TcpServer
     {
@@ -44,7 +63,7 @@ namespace server
                 logMessage(FATAL, "created socket error!");
                 exit(SOCKET_ERR);
             }
-            logMessage(NORMAL, "created socket success!");
+            logMessage(NORMAL, "created socket success: %d!", _listenSockfd);
 
             // 2.bind绑定自己的网络信息
             struct sockaddr_in local;
@@ -66,10 +85,16 @@ namespace server
                 exit(LISTEN_ERR);
             }
             logMessage(NORMAL, "listen socket success!");
+
         }
 
         void start()
         {
+            // 线程池初始化
+            ThreadPool<Task>::getInstance()->run();  // 获得单例
+            logMessage(NORMAL, "Thread init success!");
+
+            signal(SIGCHLD, SIG_IGN);
             for( ; ; )
             {
                 // 4.server 获取新连接 不能直接接收数据/发送数据
@@ -81,43 +106,57 @@ namespace server
                     logMessage(ERROR, "accept error, next!");
                     continue;
                 }
-                logMessage(NORMAL, "accept a new link success!"); // ?
-                cout << "sock: " << sock << endl;
+                logMessage(NORMAL, "accept a new link success, get new sock: %d!", sock); // ?
+                
 
                 // 5.这里就是一个sock， 未来通信通sock，面向字节流的，后续全部都是文件操作！
+                
                 // verson1
-                serviceIO(sock);
-                close(sock); // 对一个已经使用完毕的sock 要关闭这个sock 要不然会导致文件描述符泄露
+                // serviceIO(sock);
+                // close(sock); // 对一个已经使用完毕的sock 要关闭这个sock 要不然会导致文件描述符泄露
+
+                // version 2, 多进程版，
+                // pid_t id = fork();
+                // if(id == 0)
+                // {
+                //     // 子进程 向外提供服务 不需要监听 关闭这个文件描述符
+                //     close(_listenSockfd);
+                //     // if(fork() > 0) exit(0); // 让子进程的子进程执行下面代码 子进程退出
+                //     serviceIO(sock);
+                //     close(sock); // 关闭父进程的
+                //     exit(0);  // 最后变成孤儿进程 交给OS回收这个进程
+                // }
+                // close(sock); // 关闭子进程的
+
+                // 父进程
+                // pid_t ret = waitpid(id, nullptr, 0); // 阻塞式等待
+                // if(ret > 0)
+                // {
+                //     cout << "wait success: " << ret << endl;
+                // }
+
+                // version3 多线程版， 有频繁创建的问题
+                // pthread_t tid;
+                // ThreadData* td = new ThreadData(this, sock);
+                // pthread_create(&tid, nullptr, threadRoutine, td); // 每个线程不需要关闭文件描述符
+                
+                // // pthread_join(tid, nullptr); // 阻塞等待，不可行 使用线程分离
+
+                // version4 线程池版
+                ThreadPool<Task>::getInstance()->Push(Task(sock, serviceIO));
             }
         }
-        
-        void serviceIO(int sock)
+
+        static void *threadRoutine(void *args) // 必须为
         {
-            char buffer[1024];
-            while(true)
-            {
-                ssize_t n = read(sock, buffer, sizeof(buffer)-1);
-                if(n > 0)
-                {
-                    // 目前把独到的数据当成字符串 截至目前
-                    buffer[n] = 0;
-                    cout << "recv message:" << buffer << endl;
-
-                    string outBuffer = buffer;
-                    outBuffer += "  server[echo]";
-
-                    write(sock, outBuffer.c_str(), outBuffer.size());
-                }
-                else if(n == 0)
-                {
-                    // 代表client退出
-                    logMessage(NORMAL, "client quit, me too!");
-                    break;
-                }
-            }           
-
+            pthread_detach(pthread_self());
+            ThreadData* td = static_cast<ThreadData*>(args);
+            serviceIO(td->_sock);
+            delete td;
+            close(td->_sock);
+            return nullptr;
         }
-
+        
         ~TcpServer()
         {}
     private:

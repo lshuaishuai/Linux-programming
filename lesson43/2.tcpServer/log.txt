@@ -1,0 +1,20 @@
+[NORMAL][1715159360][pid: 32492]created socket success: 3!
+[NORMAL][1715159372][pid: 32543]created socket success: 3!
+[NORMAL][1715159372][pid: 32543]bind socket success!
+[NORMAL][1715159372][pid: 32543]listen socket success!
+[DEBUG][1715159372][pid: 32544]thread-1 start...
+[DEBUG][1715159372][pid: 32544]thread-2 start...
+[DEBUG][1715159372][pid: 32544]thread-3 start...
+[DEBUG][1715159372][pid: 32544]thread-4 start...
+[DEBUG][1715159372][pid: 32544]thread-5 start...
+[NORMAL][1715159372][pid: 32544]Thread init success!
+[NORMAL][1715159375][pid: 32544]accept a new link success, get new sock: 4!
+[DEBUG][1715159375][pid: 32544]accept error, next!
+[NORMAL][1715159375][pid: 32544]accept error, next!
+[WARNING][1715159375][pid: 32544]accept error, next!
+[NORMAL][1715159380][pid: 32544]accept a new link success, get new sock: 5!
+[DEBUG][1715159380][pid: 32544]accept error, next!
+[NORMAL][1715159380][pid: 32544]accept error, next!
+[WARNING][1715159380][pid: 32544]accept error, next!
+[NORMAL][1715159463][pid: 32544]client quit, me too!
+[NORMAL][1715159463][pid: 32544]client quit, me too!

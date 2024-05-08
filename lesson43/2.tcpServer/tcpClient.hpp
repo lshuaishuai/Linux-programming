@@ -46,8 +46,8 @@ public:
         server.sin_family = AF_INET;
         server.sin_port = htons(_serverPort);
         server.sin_addr.s_addr = inet_addr(_serverIp.c_str());
-        int n = connect(_sock, (struct sockaddr*)&server, sizeof(server));
-        if(n != 0)
+       
+        if(connect(_sock, (struct sockaddr*)&server, sizeof(server)) != 0)
         {
             cerr << "socket connect error" << endl;
 

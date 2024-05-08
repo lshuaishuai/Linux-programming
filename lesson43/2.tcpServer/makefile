@@ -3,10 +3,10 @@ cc=g++
 all:tcpServer tcpClient
 
 tcpServer:tcpServer.cc
-	$(cc) -o $@ $^ -std=c++11
+	$(cc) -o $@ $^ -lpthread -std=c++11
 
 tcpClient:tcpClient.cc
-	$(cc) -o $@ $^ -std=c++11
+	$(cc) -o $@ $^ -lpthread -std=c++11
 
 .PHONY:clean
 clean:
