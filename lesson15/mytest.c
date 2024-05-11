@@ -1,28 +1,46 @@
-#include<stdio.h>
-#include<string.h>
-
-int AddToTarget(int from, int to)
-{
-    int sum = 0;
-    for(int i=from; i < to; i++)
-    {
-        sum += i;
-    }
-    return sum;
-}
-
+#include <stdio.h> 
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 int main()
 {
-    for(int i=0;i<200;i++)
-    {
-        printf("%d:%s\n",i,strerror(i));
+    pid_t pid;
+
+    pid = fork();
+    if(pid < 0){
+        printf("%s fork error\n",__FUNCTION__);
+        return 1;
     }
-    // int sum = AddToTarget(1,100);
-    // printf("%d",sum);
-    // if(sum==5050)
-         //  return 0;
-    // else 
-    //  return 1;
-    // 进程退出的时候，对应的退出码
+    else if( pid == 0 )
+    { //child
+        printf("child is run, pid is : %d\n",getpid());
+        sleep(5);
+        exit(1);
+    } 
+    else
+    {
+        int status = 0;
+        pid_t ret = 0;
+        do
+        {
+            ret = waitpid(-1, &status, WNOHANG);//非阻塞式等待
+            if( ret == 0 )
+            {
+                printf("child is running\n");
+            }
+            sleep(1);
+        }while(ret == 0);
+
+        if( WIFEXITED(status) && ret == pid )
+        {
+            printf("wait child 5s success, child return code is :%d.\n",WEXITSTATUS(status));
+        }
+        else
+        {
+            printf("wait child failed, return.\n");
+            return 1;
+        }
+    }
     return 0;
 }

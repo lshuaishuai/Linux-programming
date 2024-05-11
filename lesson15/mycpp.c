@@ -9,7 +9,7 @@ int main()
     pid_t id = fork();
     if(id == 0)
     {
-        int cnt = 5;
+        int cnt = 10;
         while(cnt)
         {
             printf("我是子进程pid：%d, 父进程：%d, cnt = %d\n", getpid(), getppid(), cnt--);
@@ -25,6 +25,7 @@ int main()
     if(id > 0)
     {
         printf("wait success: %d, sig_number: %d, child_exit_code: %d\n", ret, (status & 0x7F), (status>>8)&0xFF);
+        printf("parent process pid:%d\n",getpid());
     }
     sleep(5);
 
