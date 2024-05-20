@@ -9,3 +9,6 @@
 [FATAL][1715159380][pid: 32544]accept error, next!
 [ERROR][1715159380][pid: 32544]accept error, next!
 [ERROR][1715159380][pid: 32544]accept error, next!
+[FATAL][1715586917][pid: 25756]bind socket error!
+[FATAL][1715586940][pid: 25867]bind socket error!
+[FATAL][1715586943][pid: 25878]bind socket error!

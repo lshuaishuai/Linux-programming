@@ -18,3 +18,17 @@
 [WARNING][1715159380][pid: 32544]accept error, next!
 [NORMAL][1715159463][pid: 32544]client quit, me too!
 [NORMAL][1715159463][pid: 32544]client quit, me too!
+[NORMAL][1715586917][pid: 25756]created socket success: 3!
+[NORMAL][1715586931][pid: 25812]created socket success: 3!
+[NORMAL][1715586931][pid: 25812]bind socket success!
+[NORMAL][1715586931][pid: 25812]listen socket success!
+[DEBUG][1715586931][pid: 25813]thread-1 start...
+[DEBUG][1715586931][pid: 25813]thread-2 start...
+[DEBUG][1715586931][pid: 25813]thread-3 start...
+[DEBUG][1715586931][pid: 25813]thread-4 start...
+[DEBUG][1715586931][pid: 25813]thread-5 start...
+[NORMAL][1715586931][pid: 25813]Thread init success!
+[NORMAL][1715586940][pid: 25867]created socket success: 3!
+[NORMAL][1715586943][pid: 25878]created socket success: 3!
+[NORMAL][1715586963][pid: 25813]accept a new link success, get new sock: 4!
+[NORMAL][1715587303][pid: 25813]client quit, me too!

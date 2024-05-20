@@ -5,7 +5,7 @@
 #include<sys/wait.h>
 #include<sys/types.h>
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     printf("process is running\n!");
     pid_t id = fork();
@@ -13,12 +13,16 @@ int main(int argc, char* argv[])
     if(id == 0)
     {
         sleep(1);
-        execvp(argv[1], &argv[1]);
-       // execl("./mycpp", "mycpp", NULL);
+        // execvp(argv[1], &argv[1]);
+    //    execlp("ls", "ls","-a", "-l", NULL);
+        char *arv_[] = { "mycpp", NULL };
+        execvp("./mybin", arv_);
+    //    printf("原子进程!\n");
        //  char* const envp_[] = {
           //   (char*)"MYENV=1111111111",
            //  NULL
        //  };
+    //    execv("/usr/bin/ls", arv_);
        //  extern char** environ;
        //  execle("./mybin","mybin",NULL, envp_);  // 最后一个为自定义环境变量
        //  putenv((char*)"MYENV=444323232"); // 将指定环境变量导入到系统中 environ指向的表
@@ -29,7 +33,7 @@ int main(int argc, char* argv[])
     int status = 0;
     int ret = waitpid(id, &status, 0);
     if(ret > 0) printf("wait success: exit code:%d, sig:%d\n", (status>>8) & 0xFF, status & 0x7F);
-   // pid_t id = fork();
+//    pid_t id = fork();
     // 用我们的程序将别人的程序执行起来
     // .c -> exe -> load -> process -> 运行 -> 执行我们现在所写的代码
     // printf("process is running...\n");
@@ -38,6 +42,6 @@ int main(int argc, char* argv[])
     // execl("/usr/bin/ls"/*要执行哪个程序*/, "ls","-a", "-l", "--color=auto", NULL/*你想怎么执行*/);  // 所有的execl* 系列的接口都必须以NULL结尾
     // printf("execl\n");
     // 为何下面的printf没有执行呢？ printf是在execl之后的，execl执行完毕后，代码已经完全被替换 开始新的程序的代码了
-   //  printf("process running done...\n");
+    // printf("process running done...\n");
     return 0;
 }
