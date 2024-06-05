@@ -52,9 +52,9 @@ int main()
     }
     close(1);
     dup2(fd, 1);
-    char buf[1024];
     while(1)
     {
+    char buf[1024];
         ssize_t s = read(0, buf, sizeof(buf)-1);
         if(s < 0)
         {
