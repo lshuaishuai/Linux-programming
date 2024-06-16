@@ -41,6 +41,6 @@ void logMessage(int level, const char* format, ...) // ... 可变参数列表
     vsnprintf(logContent, sizeof(logContent), format, arg);
     
     cout << logPreFix << logContent << endl;
-
+    
    
 }
