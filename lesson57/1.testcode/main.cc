@@ -27,6 +27,7 @@ int main()
         // printf(">> ");
         // fflush(stdout);
         ssize_t s = read(0, buffer, sizeof(buffer)-1);
+        std::cout << s << std::endl;
         if(s > 0)
         {
             buffer[s] = 0;
