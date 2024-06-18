@@ -73,16 +73,17 @@ public:
         logMessage(NORMAL, "listen socket success!");
     }
 
-    int Accept(std::string *clientip, uint16_t *clientport)
+    int Accept(std::string *clientip, uint16_t *clientport, int* err)
     {
         struct sockaddr_in peer;
         socklen_t len = sizeof(peer);
         int sock = accept(_listensock, (struct sockaddr *)&peer, &len); // sock 和client进行通信
-        if (sock < 0) 
-            logMessage(ERROR, "accept error, next!");
+        *err = errno;
+        if (sock < 0) {}
+            // logMessage(ERROR, "accept error, next!");
         else
         { 
-            logMessage(NORMAL, "accept a new link success, get new sock: %d!", sock); // ?
+            // logMessage(NORMAL, "accept a new link success, get new sock: %d!", sock); // ?
             *clientip = inet_ntoa(peer.sin_addr);
             *clientport = ntohs(peer.sin_port);
         }
@@ -92,6 +93,11 @@ public:
     int Fd()
     {
         return _listensock;
+    }
+
+    void Close()
+    {
+        if(_listensock != defaultsock) close(_listensock);
     }
     
 private:

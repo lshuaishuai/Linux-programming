@@ -45,6 +45,18 @@ public:
         return n == 0; // 等于0添加成功
     }
 
+    // kernel -> user
+    int Wait(struct epoll_event revs[], int num, int timeout)
+    {
+        int n = epoll_wait(_epfd, revs, num, timeout);
+        return n;
+    }
+
+    void Close()
+    {
+        if(_epfd != defaultepfd) close(_epfd);
+    }
+
 private:
     int _epfd;
 };
